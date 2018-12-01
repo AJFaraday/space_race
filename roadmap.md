@@ -17,3 +17,5 @@ paths
 * opposite corners
 * star (5 point, skipping 2)
 * star (7 point, skipping 3)
+* small box
+* long thin box

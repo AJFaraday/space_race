@@ -1,0 +1,23 @@
+path:
+  - x: 45
+    y: 45
+  - x: 55
+    y: 45
+  - x: 55
+    y: 55
+  - x: 45
+    y: 55
+opponents:
+  - kls: Simple
+    speed: 100 #out of 100
+    x: 25
+    y: 75
+    display_name: Alice
+    colour: 0xff_ffaaaa
+  - kls: Turner
+    speed: 100 #out of 100
+    x: 25
+    y: 75
+    display_name: Bob
+    colour: 0xff_aaffaa
+target: 16

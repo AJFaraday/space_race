@@ -13,28 +13,28 @@ path:
     y: 75
 opponents:
   - kls: Simple
-    speed: 22 #out of 100
-    x: 10
-    y: 10
+    speed: 100 #out of 100
+    x: 25
+    y: 75
     display_name: Alice
     colour: 0xff_ffaaaa
-  - kls: Simple
-    speed: 24 #out of 100
-    x: 90
-    y: 10
+  - kls: Turner
+    speed: 100 #out of 100
+    x: 25
+    y: 75
     display_name: Bob
     colour: 0xff_aaffaa
-  - kls: Simple
-    speed: 26 #out of 100
-    x: 90
-    y: 90
-    display_name: Charles
-    colour: 0xff_aaaaff
-  - kls: Simple
-    speed: 30 #out of 100
-    x: 10
-    y: 90
-    display_name: Derek
-    colour: 0xff_aaaaaa
-target: 8
+  #- kls: Simple
+  #  speed: 87 #out of 100
+  #  x: 25
+  #  y: 75
+  #  display_name: Charles
+  #  colour: 0xff_aaaaff
+  #- kls: Simple
+  #  speed: 88 #out of 100
+  #  x: 25
+  #  y: 75
+  #  display_name: Derek
+  #  colour: 0xff_aaaaaa
+target: 80
 

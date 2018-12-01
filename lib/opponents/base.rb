@@ -5,7 +5,7 @@ module Opponents
       super
       @n = 0
       @speed = config.speed || 40
-      @interval = 100 / @speed
+      @interval = 100.0 / @speed
       @x = ($game.width / 100.0) * config.x if config.x
       @y = ($game.height / 100.0) * config.y if config.y
     end

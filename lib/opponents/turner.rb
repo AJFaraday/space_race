@@ -1,13 +1,14 @@
 module Opponents
-  class Simple < Base
+  class Turner < Base
 
     def move
-      if diff_angle > 0
+      if diff_angle > 3
         turn_right
-      elsif diff_angle < 0
+      elsif diff_angle < -3
         turn_left
+      else
+        move_forward
       end
-      move_forward
       super
     end
 
