@@ -1,10 +1,13 @@
 class Flyer
 
-  attr_reader :score, :player, :x, :y
+  attr_reader :score, :player, :x, :y, :config, :display_name, :colour
 
-  def initialize(image, player = false)
-    @player = player
-    @image = image
+  def initialize(config)
+    @config = config.is_a?(Config) ? config : Config.new(config)
+    @player = @config.player || false
+    @display_name = @config.display_name || 'Player'
+    @colour = @config.colour || 0xff_ffffff
+    @image = @config.image || $game.player_image
     @beep = Gosu::Sample.new("media/beep.wav")
     @x = @y = @vel_x = @vel_y = @angle = 0.0
     @star_index = 0
@@ -39,7 +42,7 @@ class Flyer
   end
 
   def draw
-    @image.draw_rot(@x, @y, 1, @angle)
+    @image.draw_rot(@x, @y, 1, @angle, 0.5, 0.5, 1, 1, colour)
   end
 
   def collect_stars

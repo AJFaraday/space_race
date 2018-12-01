@@ -1,0 +1,15 @@
+name: Simple Square
+path:
+  - x: 25
+    y: 25
+  - x: 75
+    y: 25
+  - x: 75
+    y: 75
+  - x: 25
+    y: 75
+opponents:
+  - ks: Simple
+    x: 75
+    y: 25
+target: 8

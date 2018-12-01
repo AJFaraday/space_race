@@ -2,13 +2,15 @@ class Config
 
   def initialize(data=nil)
     @init_data = data ? data : YAML.load_file('config.yml')
+    @init_data.stringify_keys!
     @data = {}
   end
 
   def method_missing(meth, *args, &block)
     return @data[meth.to_s] if @data[meth.to_s]
     return @data[meth] = get_data(@init_data[meth.to_s]) if @init_data[meth.to_s]
-    super
+    super if respond_to?(meth)
+    nil
   end
 
   private

@@ -4,6 +4,7 @@ class Flight < Gosu::Window
 
   attr_accessor :player, :star_anim, :font, :stars, :config
   attr_accessor :active_colour, :leading_colour, :inactive_colour
+  attr_accessor :level, :player_image
 
   def initialize
     @config = Config.new
@@ -14,36 +15,48 @@ class Flight < Gosu::Window
       "media/space.png",
       tileable: true
     )
-
-    @active_colour = Gosu::Color.rgba(0, 0, 255, 255)
-    @leading_colour = Gosu::Color.rgba(128, 0, 128, 255)
-    @inactive_colour = Gosu::Color.rgba(255, 0, 0, 255)
-
-    init_flyers
-
     @star_anim = Gosu::Image.load_tiles("media/star.png", 25, 25)
-    @stars = Array.new
+    @player_image = Gosu::Image.new("media/starfighter.bmp")
+    @active_colour = Gosu::Color.rgba(0, 255, 0, 255)
+    @leading_colour = Gosu::Color.rgba(255, 255, 0, 255)
+    @inactive_colour = Gosu::Color.rgba(255, 0, 0, 255)
     @font = Gosu::Font.new(20)
     @end_font = Gosu::Font.new(200)
-    @active = true
+  end
+
+  def init_stars
+    @stars = Array.new
+    Path.load
+    player.mark_star
   end
 
   def init_flyers
-    @player_image = Gosu::Image.new("media/starfighter.bmp")
-    @player = Flyer.new(@player_image, true)
+    @player = Flyer.new(player: true)
     @player.warp(320, 240)
     @flyers = [@player]
 
-    config.opponents.each do |opponent|
-      opp = Opponents.const_get(opponent.kls).new(@player_image)
-      opp.warp((width / 2), (height / 2))
-      @flyers.push(opp)
+    config.opponents.each do |opponent_config|
+      opponent = Opponents.const_get(opponent_config.kls).new(opponent_config)
+      @flyers.push(opponent)
     end
   end
 
+  def new_game
+    @level ||= 1
+    if @player && @player.won?
+      # next level
+      @level += 1
+    else
+      # repeat level
+    end
+    @ended_at = nil
+    @active = true
+    init_flyers
+    init_stars
+  end
+
   def show
-    Path.load
-    player.mark_star
+    new_game
     super
   end
 
@@ -85,7 +98,7 @@ class Flight < Gosu::Window
       Gosu::Color::YELLOW
     )
     @font.draw_text(
-      "Level 1",
+      "Level #{level}",
       10, 10,
       ZOrder::UI,
       1.0,
@@ -93,16 +106,16 @@ class Flight < Gosu::Window
       Gosu::Color::YELLOW
     )
 
-    @flyers.select { |f| !f.player }.each do |opp|
+    @flyers.select { |f| !f.player }.each_with_index do |opp, i|
       msg = "#{opp.display_name}: #{opp.score}/#{config.target}"
       @font.draw_text(
         msg,
         ($game.width - @font.text_width(msg) - 10),
-        10,
+        10 + (i * 20),
         ZOrder::UI,
         1.0,
         1.0,
-        Gosu::Color::YELLOW
+        opp.colour
       )
     end
     if !@active
@@ -114,15 +127,7 @@ class Flight < Gosu::Window
       @ended_at ||= Gosu.milliseconds
       count = 3 - (Gosu.milliseconds - @ended_at) / 1000
       @end_font.draw_text(count, 270, 200, ZOrder::UI)
-      new_game if @count = 0
-    end
-  end
-
-  def new_game
-    if @player.won?
-      # next level
-    else
-      # repeat level
+      new_game if count == 0
     end
   end
 
